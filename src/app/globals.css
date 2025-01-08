@@ -2,48 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@font-face {
-  font-family: "PPHatton";
-  src: url("/fonts/PPHatton/PPHatton-Bold.otf") format("opentype");
-  font-weight: 700;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "PPHatton";
-  src: url("/fonts/PPHatton/PPHatton-BoldItalic.otf") format("opentype");
-  font-weight: 700;
-  font-style: italic;
-}
-
-@font-face {
-  font-family: "PPHatton";
-  src: url("/fonts/PPHatton/PPHatton-Medium.otf") format("opentype");
-  font-weight: 500;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "PPHatton";
-  src: url("/fonts/PPHatton/PPHatton-MediumItalic.otf") format("opentype");
-  font-weight: 500;
-  font-style: italic;
-}
-
-@font-face {
-  font-family: "PPHatton";
-  src: url("/fonts/PPHatton/PPHatton-UltraLight.otf") format("opentype");
-  font-weight: 200;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "PPHatton";
-  src: url("/fonts/PPHatton/PPHatton-UltraLightItalic.otf") format("opentype");
-  font-weight: 200;
-  font-style: italic;
-}
-
 :root {
   --background-color: #ffff;
   --light: #fff;
@@ -73,7 +31,6 @@ body {
   min-height: 100vh;
   font-size: 16px;
   overflow-x: hidden;
-  padding-bottom: 20px;
 }
 
 h1,
