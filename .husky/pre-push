@@ -2,7 +2,6 @@
 
 npm run build
 
+# run tests
 
-# # run tests
-
-# npm run test
+npm run test
