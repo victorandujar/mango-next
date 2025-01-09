@@ -1,36 +1,61 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Mango Slider
 
-## Getting Started
+## Stack Used
 
-First, run the development server:
+- Next.js
+- React
+- Tailwind
+- Node.js
+- TypeScript
+- Husky
+- Jest
+- React Testing Library
+- lint-staged
+
+## Follow these steps to run the project:
+
+1. Clone the GitHub repository: https://github.com/victorandujar/mango-next.git
+2. Install the dependencies using the command: ⬇️
+
+```bash
+npm i
+```
+
+3. To run the development environment, execute the following command in the console: ⬇️
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+4. To run a production environment, first build the project with the command
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm run build,
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+# and then execute:
 
-## Learn More
+npx serve build
 
-To learn more about Next.js, take a look at the following resources:
+# to run the project in a local production environment.
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Open [http://localhost:8080](http://localhost:8080) with your browser to see the result.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Testing
 
-## Deploy on Vercel
+You can run the tests to ensure the application's stability and reliability. Use the following commands:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- Execute tests:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+npm run test
+
+```
+
+- Check test coverage:
+
+```bash
+npm run test-coverage
+```
+
+#
