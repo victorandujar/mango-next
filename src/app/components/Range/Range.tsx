@@ -2,6 +2,7 @@
 
 import useRange from "@/app/hooks/useRange";
 import React, { useState, useEffect, useRef } from "react";
+import ReusbaleInput from "../ReusableInput/ReusableInput";
 
 interface RangeProps {
   type: "normal" | "fixed";
@@ -21,8 +22,18 @@ const Range: React.FC<RangeProps> = ({
   const [minPosition, setMinPosition] = useState<number>(0);
   const [maxPosition, setMaxPosition] = useState<number>(300);
   const [valueType, setValueType] = useState<"min" | "max" | null>(null);
+  const [errorFeedbackMin, setErrorFeedbackMin] = useState<boolean>(false);
+  const [errorFeedbackMax, setErrorFeedbackMax] = useState<boolean>(false);
 
-  const { handleMouseMove } = useRange();
+  const {
+    handleMouseMove,
+    handleKeyDownMin,
+    handleKeyDownMax,
+    handleMaxChange,
+    handleMinChange,
+    handleMouseDown,
+    handleTouchStart,
+  } = useRange();
 
   const rangeWidth = 300;
 
@@ -97,32 +108,6 @@ const Range: React.FC<RangeProps> = ({
     valueType,
   ]);
 
-  const handleMinChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = Math.max(
-      Math.min(Number(event.target.value), type === "normal" ? 100 : 70.99),
-      0,
-    );
-    setMin(value);
-  };
-
-  const handleMaxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = Math.max(
-      Math.min(Number(event.target.value), type === "normal" ? 100 : 70.99),
-      0,
-    );
-    setMax(value);
-  };
-
-  const handleTouchStart = (e: React.TouchEvent, handleType: "min" | "max") => {
-    e.preventDefault();
-    startDrag(handleType);
-  };
-
-  const handleMouseDown = (e: React.MouseEvent, handleType: "min" | "max") => {
-    e.preventDefault();
-    startDrag(handleType);
-  };
-
   return (
     <div
       ref={rangeRef}
@@ -134,33 +119,81 @@ const Range: React.FC<RangeProps> = ({
       <button
         className="absolute top-1/2 transform -translate-y-1/2 w-5 h-5 bg-black rounded-full cursor-grab"
         style={{ left: minPosition + "px" }}
-        onMouseDown={(e) => handleMouseDown(e, "min")}
-        onTouchStart={(e) => handleTouchStart(e, "min")}
+        onMouseDown={(event) => handleMouseDown(event, "min", startDrag)}
+        onTouchStart={(event) => handleTouchStart(event, "min", startDrag)}
+        onKeyDown={(event) =>
+          handleKeyDownMin(
+            event,
+            setMin,
+            min,
+            max,
+            rangeValues,
+            type,
+            rangeWidth,
+            setMinPosition,
+          )
+        }
+        tabIndex={0}
       />
 
       <button
         className="absolute top-1/2 transform -translate-y-1/2 w-5 h-5 bg-black rounded-full cursor-grab"
         style={{ left: maxPosition + "px" }}
-        onMouseDown={(e) => handleMouseDown(e, "max")}
-        onTouchStart={(e) => handleTouchStart(e, "max")}
+        onMouseDown={(event) => handleMouseDown(event, "max", startDrag)}
+        onTouchStart={(event) => handleTouchStart(event, "max", startDrag)}
+        onKeyDown={(event) =>
+          handleKeyDownMax(
+            event,
+            setMax,
+            min,
+            max,
+            rangeValues,
+            type,
+            rangeWidth,
+            setMaxPosition,
+          )
+        }
+        tabIndex={0}
       />
 
       {type === "normal" ? (
-        <div className="absolute top-4 left-0 flex justify-between w-full text-sm text-black">
-          <input
-            type="number"
-            value={Math.round(min)}
-            onChange={handleMinChange}
-            className="w-fit text-left px-4"
-            aria-label="min input"
-          />
-          <input
-            type="number"
-            value={Math.round(max)}
-            onChange={handleMaxChange}
-            className="w-10 text-right"
-            aria-label="max input"
-          />
+        <div className="absolute top-4 left-0 flex flex-col gap-5 items-center text-sm w-full text-black">
+          <div className="flex justify-between w-full">
+            <ReusbaleInput
+              onChange={(event) =>
+                handleMinChange(
+                  event,
+                  setMin,
+                  setErrorFeedbackMax,
+                  setErrorFeedbackMin,
+                )
+              }
+              value={min}
+              type="min"
+            />
+            <ReusbaleInput
+              onChange={(event) =>
+                handleMaxChange(
+                  event,
+                  setMax,
+                  setErrorFeedbackMax,
+                  setErrorFeedbackMin,
+                )
+              }
+              value={max}
+              type="max"
+            />
+          </div>
+          {errorFeedbackMin && (
+            <span className="text-xs text-red-600 font-bold">
+              No puedes introducir valores inferiores a 0
+            </span>
+          )}
+          {errorFeedbackMax && (
+            <span className="text-xs text-red-600 font-bold">
+              No puedes introducir valores superiores a 100
+            </span>
+          )}
         </div>
       ) : (
         <div className="absolute top-4 left-0 flex justify-between w-full text-sm text-black">

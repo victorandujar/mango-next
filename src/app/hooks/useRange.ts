@@ -195,7 +195,157 @@ const useRange = () => {
     [handleDrag],
   );
 
-  return { handleMaxPosition, handleMinPosition, handleDrag, handleMouseMove };
+  const handleKeyDownMin = (
+    event: React.KeyboardEvent,
+    setMin: React.Dispatch<React.SetStateAction<number>>,
+    min: number,
+    max: number,
+    rangeValues: number[],
+    type: "normal" | "fixed",
+    rangeWidth: number,
+    setMinPosition: (value: number) => void,
+  ) => {
+    if (type === "fixed") {
+      const currentIndex = rangeValues.indexOf(min);
+      const step = 1;
+
+      if (event.key === "ArrowLeft" && currentIndex > 0) {
+        const newMin = rangeValues[currentIndex - step];
+        setMin(newMin);
+        const newPosition =
+          (newMin / rangeValues[rangeValues.length - 1]) * rangeWidth;
+        setMinPosition(newPosition);
+      } else if (
+        event.key === "ArrowRight" &&
+        currentIndex < rangeValues.length - 1
+      ) {
+        const newMin = rangeValues[currentIndex + step];
+        setMin(newMin);
+        const newPosition =
+          (newMin / rangeValues[rangeValues.length - 1]) * rangeWidth;
+        setMinPosition(newPosition);
+      }
+    } else if (type === "normal") {
+      if (event.key === "ArrowLeft") {
+        setMin((prevMin) => Math.max(prevMin - 1, 0));
+      } else if (event.key === "ArrowRight") {
+        setMin((prevMin) => Math.min(prevMin + 1, max - 1));
+      }
+    }
+  };
+
+  const handleKeyDownMax = (
+    event: React.KeyboardEvent,
+    setMax: React.Dispatch<React.SetStateAction<number>>,
+    min: number,
+    max: number,
+    rangeValues: number[],
+    type: "normal" | "fixed",
+    rangeWidth: number,
+    setMaxPosition: (value: number) => void,
+  ) => {
+    if (type === "fixed") {
+      const currentIndex = rangeValues.indexOf(max);
+      const step = 1;
+
+      if (event.key === "ArrowLeft" && currentIndex > 0) {
+        const newMax = rangeValues[currentIndex - step];
+        setMax(newMax);
+        const newPosition =
+          (newMax / rangeValues[rangeValues.length - 1]) * rangeWidth;
+        setMaxPosition(newPosition);
+      } else if (
+        event.key === "ArrowRight" &&
+        currentIndex < rangeValues.length - 1
+      ) {
+        const newMax = rangeValues[currentIndex + step];
+        setMax(newMax);
+        const newPosition =
+          (newMax / rangeValues[rangeValues.length - 1]) * rangeWidth;
+        setMaxPosition(newPosition);
+      }
+    } else if (type === "normal") {
+      if (event.key === "ArrowLeft") {
+        setMax((prevMax) => Math.max(prevMax - 1, min + 1));
+      } else if (event.key === "ArrowRight") {
+        setMax((prevMax) => Math.min(prevMax + 1, 100));
+      }
+    }
+  };
+
+  const handleMinChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+    setMin: React.Dispatch<React.SetStateAction<number>>,
+    setErrorFeedbackMax: React.Dispatch<React.SetStateAction<boolean>>,
+    setErrorFeedbackMin: React.Dispatch<React.SetStateAction<boolean>>,
+  ) => {
+    if (+event.target.value < 0) {
+      setErrorFeedbackMin(true);
+
+      setTimeout(() => setErrorFeedbackMin(false), 2000);
+    }
+
+    if (+event.target.value > 100) {
+      setErrorFeedbackMax(true);
+
+      setTimeout(() => setErrorFeedbackMax(false), 2000);
+    }
+
+    const value = Math.max(Math.min(+event.target.value, 100), 0);
+    setMin(value);
+  };
+
+  const handleMaxChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+    setMax: React.Dispatch<React.SetStateAction<number>>,
+    setErrorFeedbackMax: React.Dispatch<React.SetStateAction<boolean>>,
+    setErrorFeedbackMin: React.Dispatch<React.SetStateAction<boolean>>,
+  ) => {
+    if (+event.target.value < 0) {
+      setErrorFeedbackMin(true);
+
+      setTimeout(() => setErrorFeedbackMin(false), 2000);
+    }
+
+    if (+event.target.value > 100) {
+      setErrorFeedbackMax(true);
+
+      setTimeout(() => setErrorFeedbackMax(false), 2000);
+    }
+    const value = Math.max(Math.min(+event.target.value, 100), 0);
+    setMax(value);
+  };
+
+  const handleTouchStart = (
+    event: React.TouchEvent,
+    handleType: "min" | "max",
+    startDrag: (value: "min" | "max") => void,
+  ) => {
+    event.preventDefault();
+    startDrag(handleType);
+  };
+
+  const handleMouseDown = (
+    event: React.MouseEvent,
+    handleType: "min" | "max",
+    startDrag: (value: "min" | "max") => void,
+  ) => {
+    event.preventDefault();
+    startDrag(handleType);
+  };
+
+  return {
+    handleMaxPosition,
+    handleMinPosition,
+    handleDrag,
+    handleMouseMove,
+    handleKeyDownMin,
+    handleKeyDownMax,
+    handleMinChange,
+    handleMaxChange,
+    handleTouchStart,
+    handleMouseDown,
+  };
 };
 
 export default useRange;
