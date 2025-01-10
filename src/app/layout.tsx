@@ -1,7 +1,9 @@
-import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
 import Header from "./components/Header/Header";
+import rangeServices from "./services";
+import React from "react";
+import "./globals.css";
+import { RangeProvider } from "./contexts/RangeContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -13,23 +15,28 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
+export const metadata = {
   title: "Mango Range App",
   description: "Range compos for Mango test",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
+  const minMax = rangeServices.getMinMaxValues();
+  const range = rangeServices.getRangeValues();
+
+  const [minMaxValues, values] = await Promise.all([minMax, range]);
+
   return (
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Header />
-        {children}
+        <RangeProvider minMaxValues={minMaxValues} values={values}>
+          <Header />
+          {children}
+        </RangeProvider>
       </body>
     </html>
   );
