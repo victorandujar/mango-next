@@ -11,6 +11,9 @@ export default {
         background: "var(--background)",
         foreground: "var(--foreground)",
       },
+      screens: {
+        mobile: { max: "800px" },
+      },
     },
   },
   plugins: [],

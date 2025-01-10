@@ -8,7 +8,7 @@ const Header = (): React.ReactElement => {
       <Link href={"/"}>
         <Image src={"/mango-logo.png"} alt="logo" width={150} height={100} />
       </Link>
-      <section className="absolute right-20">
+      <section className="absolute right-20 mobile:top-32">
         <Navbar />
       </section>
     </header>

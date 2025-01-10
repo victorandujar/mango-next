@@ -1,8 +1,12 @@
-import rangeServices from "../services";
-import Range from "../components/Range/Range";
+"use client";
 
-export default async function Exercise2Page() {
-  const { rangeValues } = await rangeServices.getRangeValues();
+import Range from "../components/Range/Range";
+import { useRangeContext } from "../contexts/RangeContext";
+
+export default function Exercise2Page() {
+  const {
+    values: { rangeValues },
+  } = useRangeContext();
 
   return (
     <main className="w-full flex flex-col items-center justify-center gap-20 pt-24">

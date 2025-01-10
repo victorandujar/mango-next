@@ -59,3 +59,7 @@ npm run test-coverage
 ```
 
 #
+
+You will have to creat a .env.local file with the variable:
+
+NEXT_PUBLIC_API_URL=http://localhost:8080
